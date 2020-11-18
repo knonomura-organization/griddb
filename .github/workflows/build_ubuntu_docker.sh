@@ -2,7 +2,7 @@
 
 sudo apt-get install gcc-4.8
 sudo apt-get install g++-4.8
-sudo apt-get install tcl
+sudo apt-get install tcl debhelper libz-dev libsqlite3-dev
 
 export CC=gcc-4.8
 export CC_FOR_BUILD=gcc-4.8
