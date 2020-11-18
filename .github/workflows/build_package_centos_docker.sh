@@ -16,9 +16,8 @@ export GRIDDB_ZIP_FILE="${GRIDDB_FOLDER_NAME}.zip"
 echo $GRIDDB_ZIP_FILE
 rm output.txt
 
-
 #config sever
-docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_FOLDER_NAME" -e  GRIDDB_ZIP_FILE="$GRIDDB_ZIP_FILE" -c "cd griddb \
+docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_FOLDER_NAME" -e  GRIDDB_ZIP_FILE="$GRIDDB_ZIP_FILE" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "cd griddb \
 && ./bootstrap.sh \
 && ./configure \
 && make \
