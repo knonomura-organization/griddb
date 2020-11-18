@@ -7,19 +7,23 @@ docker run --name ${DOCKER_CONTAINER_NAME_CENTOS} -ti -d -v `pwd`:/griddb --env 
 #install dependency, support for griddb sever
 docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -xec "yum install automake make gcc gcc-c++ libpng-devel java ant zlib-devel tcl.x86_64 -y"
 
+echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) >output.txt
+export GRIDDB_VERSION=$(awk '{print $1}' output.txt)
+export GRIDDB_FOLDER_NAME="griddb-$griddb_version"
+export GRIDDB_ZIP_FILE="$GRIDDB_FOLDER_NAME.zip"
+rm output.txt
+
+
 #config sever
-docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "cd griddb \
+docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -e GRIDDB_VERSION=$GRIDDB_VERSION GRIDDB_FOLDER_NAME=$GRIDDB_FOLDER_NAME GRIDDB_ZIP_FILE=$GRIDDB_ZIP_FILE -c "cd griddb \
 && ./bootstrap.sh \
 && ./configure \
 && make \
-&& export griddb_version=4.5.2 \
-&& export griddb_folder_name=\"griddb-$griddb_version\"   \
-&& export griddb_zip_file=\"$griddb_folder_name.zip\"    \
 && cd ../    \
-&& cp -rf griddb/ $griddb_folder_name    \
-&& zip -r $griddb_zip_file $griddb_folder_name   \
-&& mv $griddb_zip_file griddb/installer/SOURCES/  \
-&& rm -rf $griddb_folder_name   \
+&& cp -rf griddb/ ${GRIDDB_FOLDER_NAME}    \
+&& zip -r ${GRIDDB_ZIP_FILE} ${GRIDDB_FOLDER_NAME}   \
+&& mv ${GRIDDB_ZIP_FILE} griddb/installer/SOURCES/  \
+&& rm -rf $GRIDDB_FOLDER_NAME   \
 && cd griddb/installer   \
 && rpmbuild --define=\"_topdir `pwd`\" -bb --clean SPECS/griddb.spec"
 
