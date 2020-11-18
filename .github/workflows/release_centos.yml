@@ -1,10 +1,10 @@
-name: Create package on release
+name: Create rpm package on release (test)
 
 on: create
 
 jobs:
   release:
-    name: Create and release deb file
+    name: Create and release rpm file for CentOS
     runs-on: ubuntu-18.04
     env:
       CENTOS_VERSION: 7
