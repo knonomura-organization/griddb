@@ -22,11 +22,11 @@ jobs:
         run: ./.github/workflows/build_ubuntu_docker.sh
 
       - name: Upload Release Asset
-	uses: actions/upload-release-asset@v1
-	env:
+        uses: actions/upload-release-asset@v1
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-	  upload_url: ${{ steps.create_release.outputs.upload_url }}
-	  asset_path: ../griddb_4.5.2_amd64.deb
-	  asset_name: griddb_4.5.2_amd64.deb
-	  asset_content_type: application/zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ../griddb_4.5.2_amd64.deb
+          asset_name: griddb_4.5.2_amd64.deb
+          asset_content_type: application/zip
