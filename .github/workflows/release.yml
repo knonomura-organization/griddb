@@ -4,24 +4,27 @@ on: create
 
 jobs:
   release:
-    name: Create deb file
+    name: Create and release deb file
     runs-on: ubuntu-18.04
     env:
       CENTOS_VERSION: 7
-      OPENSUSE_VERSION: 15.1
-      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
-      GRIDDB_NOTIFICATION_PORT: "31999"
-      GRIDDB_CLUSTER_NAME: "griddbDocker"
-      GRIDDB_USERNAME: "admin"
-      GRIDDB_PASSWORD: "admin"
-      DOCKER_CONTAINER_NAME_CENTOS: "griddbCentosDocker"
-      DOCKER_CONTAINER_NAME_OPENSUSE: "griddbOpensuseDocker"
     steps:
       - uses: actions/checkout@v1
       - name: Build package for Ubuntu
         run: ./.github/workflows/build_ubuntu_docker.sh
 
-      - name: Upload Release Asset
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload deb file
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
