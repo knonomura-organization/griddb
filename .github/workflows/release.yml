@@ -1,10 +1,10 @@
-name: Build GridDB server and execute java sample
+name: Create package on release
 
 on: create
 
 jobs:
   release:
-    name: Release GitHub Actions
+    name: Create deb file
     runs-on: ubuntu-latest
     env:
       CENTOS_VERSION: 7
