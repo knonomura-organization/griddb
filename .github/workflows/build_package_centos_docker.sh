@@ -23,5 +23,5 @@ docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "cd griddb \
 && mv $griddb_zip_file griddb/installer/SOURCES/  \
 && rm -rf $griddb_folder_name   \
 && cd griddb/installer   \
-&& rpmbuild --define="_topdir `pwd`" -bb --clean SPECS/griddb.spec"
+&& rpmbuild --define=\"_topdir `pwd`\" -bb --clean SPECS/griddb.spec"
 
