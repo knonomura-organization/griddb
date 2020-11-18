@@ -6,8 +6,6 @@ jobs:
   release:
     name: Create and release deb file
     runs-on: ubuntu-18.04
-    env:
-      CENTOS_VERSION: 7
     steps:
       - uses: actions/checkout@v1
       - name: Build package for Ubuntu
