@@ -27,10 +27,9 @@ jobs:
 
       - name: Upload deb file
         id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
+        uses: svenstaro/upload-release-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ../griddb_*_amd64.deb
-          asset_content_type: application/vnd.debian.binary-package
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ../griddb_*_amd64.deb
