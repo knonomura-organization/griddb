@@ -13,9 +13,8 @@ docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "cd griddb \
 && ./configure \
 && make \
 && export griddb_version=4.5.2 \
-&& export griddb_folder_name=griddb-$griddb_version   \
-&& export griddb_zip_file=$griddb_folder_name.zip    \
-&& rm output.txt    \
+&& export griddb_folder_name=\"griddb-$griddb_version\"   \
+&& export griddb_zip_file=\"$griddb_folder_name.zip\"    \
 && cd ../    \
 && cp -rf griddb/ $griddb_folder_name    \
 && zip -r $griddb_zip_file $griddb_folder_name   \
