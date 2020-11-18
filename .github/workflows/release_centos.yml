@@ -1,0 +1,17 @@
+name: Create package on release
+
+on: create
+
+jobs:
+  release:
+    name: Create and release deb file
+    runs-on: ubuntu-18.04
+    env:
+      CENTOS_VERSION: 7
+      OPENSUSE_VERSION: 15.1
+      DOCKER_CONTAINER_NAME_CENTOS: "dockerCentOS"
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build package for CentOS
+        run: ./build_package_centos_docker.sh
+ 
