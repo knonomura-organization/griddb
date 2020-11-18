@@ -10,9 +10,9 @@ docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -xec "yum install automake
 echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) >output.txt
 export GRIDDB_VERSION=$(awk '{print $1}' output.txt)
 echo $GRIDDB_VERSION
-export GRIDDB_FOLDER_NAME="griddb-$griddb_version"
+export GRIDDB_FOLDER_NAME="griddb-${GRIDDB_VERSION}"
 echo $GRIDDB_FOLDER_NAME
-export GRIDDB_ZIP_FILE="$GRIDDB_FOLDER_NAME.zip"
+export GRIDDB_ZIP_FILE="${GRIDDB_FOLDER_NAME}.zip"
 echo $GRIDDB_ZIP_FILE
 rm output.txt
 
