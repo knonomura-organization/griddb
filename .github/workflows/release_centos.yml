@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build package for CentOS
-        run: ./build_package_centos_docker.sh
+        run: ./.github/workflows/build_package_centos_docker.sh
  
