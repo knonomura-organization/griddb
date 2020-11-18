@@ -1,17 +1,15 @@
 #!/bin/sh -xe
 
-# Build package on ubuntu
-docker pull ubuntu:18.04
-docker run --name ${DOCKER_CONTAINER_NAME_CENTOS} -ti -d -v `pwd`:/griddb --env GS_LOG=/griddb/log --env GS_HOME=/griddb ubuntu:18.04
-#install dependency, support for griddb sever
-docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -xec "apt-get update"
-docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -xec "apt-get install -y tcl debhelper libz-dev libsqlite3-dev gcc-4.8 g++-4.8"
+sudo apt-get install gcc-4.8
+sudo apt-get install g++-4.8
+sudo apt-get install tcl
 
-docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -xec "ln -sf /usr/bin/gcc-4.8 /usr/bin/gcc"
-docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -xec "ln -sf /usr/bin/g++-4.8 /usr/bin/g++"
-
-#config sever
-docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "cd griddb \
-&& dpkg-buildpackage -b"
-
+export CC=gcc-4.8
+export CC_FOR_BUILD=gcc-4.8
+export CXX=g++-4.8
+export CXX_FOR_BUILD=g++-4.8
+#./bootstrap.sh
+#./configure
+#make
+dpkg-buildpackage -b
 
