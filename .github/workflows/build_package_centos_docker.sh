@@ -12,8 +12,7 @@ docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "cd griddb \
 && ./bootstrap.sh \
 && ./configure \
 && make \
-&& echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) >output.txt \
-&& export griddb_version=$(awk '{print $1}' output.txt) \
+&& export griddb_version=4.5.2 \
 && export griddb_folder_name=griddb-$griddb_version   \
 && export griddb_zip_file=$griddb_folder_name.zip    \
 && rm output.txt    \
