@@ -14,12 +14,12 @@ docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "cd griddb \
 && make \
 && echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) >output.txt \
 && export griddb_version=$(awk '{print $1}' output.txt) \
-&& export griddb_folder_name= griddb-$griddb_version   \
-&& export griddb_zip_file = $griddb_folder_name.zip    \
+&& export griddb_folder_name=griddb-$griddb_version   \
+&& export griddb_zip_file=$griddb_folder_name.zip    \
 && rm output.txt    \
 && cd ../    \
 && cp -rf griddb/ $griddb_folder_name    \
-&& zip -rf $griddb_zip_file $griddb_folder_name   \
+&& zip -r $griddb_zip_file $griddb_folder_name   \
 && mv $griddb_zip_file griddb/installer/SOURCES/  \
 && rm -rf $griddb_folder_name   \
 && cd griddb/installer   \
