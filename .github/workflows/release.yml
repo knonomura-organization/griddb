@@ -21,16 +21,11 @@ jobs:
           export CXX_FOR_BUILD=g++-4.8
           dpkg-buildpackage -b
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Get Release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
 
       - name: Upload deb file
         id: upload-release-asset 
@@ -38,7 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
           asset_path: ../griddb_4.5.2_amd64.deb
           asset_name: griddb_4.5.2_amd64.deb
-          asset_content_type: application/zip
+          asset_content_type: application/vnd.debian.binary-package
