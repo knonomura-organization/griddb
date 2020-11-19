@@ -22,9 +22,9 @@ docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_F
 && ./configure \
 && make \
 && cd ../    \
-&& cp -rf griddb/ ${GRIDDB_FOLDER_NAME}    \
-&& zip -r ${GRIDDB_ZIP_FILE} ${GRIDDB_FOLDER_NAME}   \
-&& mv ${GRIDDB_ZIP_FILE} griddb/installer/SOURCES/  \
+&& cp -rf griddb/ $GRIDDB_FOLDER_NAME    \
+&& zip -r $GRIDDB_ZIP_FILE $GRIDDB_FOLDER_NAME   \
+&& mv $GRIDDB_ZIP_FILE griddb/installer/SOURCES/  \
 && rm -rf $GRIDDB_FOLDER_NAME   \
 && cd griddb/installer   \
 && rpmbuild --define=\"_topdir `pwd`\" -bb --clean SPECS/griddb.spec"
