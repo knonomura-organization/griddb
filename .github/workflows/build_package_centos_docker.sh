@@ -24,10 +24,10 @@ echo $GRIDDB_ZIP_FILE
 rm output.txt
 
 # Create rpm file
-docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_FOLDER_NAME" -e  GRIDDB_ZIP_FILE="$GRIDDB_ZIP_FILE" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "cp -rf griddb/ $GRIDDB_FOLDER_NAME    \
-&& zip -r $GRIDDB_ZIP_FILE $GRIDDB_FOLDER_NAME   \
-&& mv $GRIDDB_ZIP_FILE griddb/installer/SOURCES/  \
-&& rm -rf $GRIDDB_FOLDER_NAME   \
-&& cd griddb/installer   \
+cp -rf griddb/ $GRIDDB_FOLDER_NAME
+zip -r $GRIDDB_ZIP_FILE $GRIDDB_FOLDER_NAME
+mv $GRIDDB_ZIP_FILE griddb/installer/SOURCES/
+rm -rf $GRIDDB_FOLDER_NAME
+docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_FOLDER_NAME" -e  GRIDDB_ZIP_FILE="$GRIDDB_ZIP_FILE" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "cd griddb/installer   \
 && rpmbuild --define=\"_topdir `pwd`\" -bb --clean SPECS/griddb.spec"
 
