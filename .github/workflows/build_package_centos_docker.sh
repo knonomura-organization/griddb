@@ -38,6 +38,9 @@ docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_F
 && rpmbuild --define=\"_topdir /griddb/installer\" -bb --clean SPECS/griddb.spec"
 
 # Copy rpm file to host
-docker cp ${DOCKER_CONTAINER_NAME_CENTOS}:/griddb/griddb/installer/RPMS/x86_64/griddb-*.rpm .
+docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "ls"
+docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "ls /griddb"
+
+docker cp ${DOCKER_CONTAINER_NAME_CENTOS}:/griddb/griddb/installer/RPMS/x86_64/griddb-4.5.2-linux.x86_64.rpm .
 
 
