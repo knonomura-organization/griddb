@@ -33,5 +33,5 @@ docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_F
 && echo $PWD    \
 && pwd \
 && ls SOURCES  \
-&& rpmbuild --define=\"_topdir `pwd`\" -bb --clean SPECS/griddb.spec"
+&& rpmbuild --define=\"_topdir /home/runner/work/griddb/griddb/installer\" -bb --clean SPECS/griddb.spec"
 
