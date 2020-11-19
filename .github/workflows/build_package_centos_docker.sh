@@ -26,6 +26,7 @@ rm output.txt
 
 # Create rpm file
 echo $PWD
+cd ..
 cp -rf griddb/ $GRIDDB_FOLDER_NAME
 zip -r $GRIDDB_ZIP_FILE $GRIDDB_FOLDER_NAME
 mv $GRIDDB_ZIP_FILE griddb/installer/SOURCES/
