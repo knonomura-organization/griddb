@@ -8,6 +8,7 @@ docker run --name ${DOCKER_CONTAINER_NAME_CENTOS} -ti -d -v `pwd`:/griddb --env 
 docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -xec "yum install automake make gcc gcc-c++ libpng-devel java ant zlib-devel tcl.x86_64 zip unzip rpm-build -y"
 
 # Build
+echo $PWD
 docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "cd griddb \
 && ./bootstrap.sh \
 && ./configure \
@@ -24,6 +25,7 @@ echo $GRIDDB_ZIP_FILE
 rm output.txt
 
 # Create rpm file
+echo $PWD
 cp -rf griddb/ $GRIDDB_FOLDER_NAME
 zip -r $GRIDDB_ZIP_FILE $GRIDDB_FOLDER_NAME
 mv $GRIDDB_ZIP_FILE griddb/installer/SOURCES/
