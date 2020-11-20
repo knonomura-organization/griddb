@@ -27,14 +27,11 @@ rm output.txt
 
 # Create rpm file
 docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_FOLDER_NAME" -e  GRIDDB_ZIP_FILE="$GRIDDB_ZIP_FILE" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "cp -rf griddb/ $GRIDDB_FOLDER_NAME    \
+&& rm -r $GRIDDB_FOLDER_NAME/.git    \
 && zip -r $GRIDDB_ZIP_FILE $GRIDDB_FOLDER_NAME    \
 && cp $GRIDDB_ZIP_FILE griddb/installer/SOURCES/    \
 && rm -rf $GRIDDB_FOLDER_NAME    \
 && cd griddb/installer   \
-&& echo $PWD    \
-&& pwd \
-&& ls SOURCES  \
-&& realpath  SOURCES/$GRIDDB_ZIP_FILE \
 && rpmbuild --define=\"_topdir /griddb/installer\" -bb --clean SPECS/griddb.spec"
 
 # Copy rpm file to host
