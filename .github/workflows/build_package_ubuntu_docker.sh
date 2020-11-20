@@ -10,7 +10,7 @@ export CXX_FOR_BUILD=g++-4.8
 dpkg-buildpackage -b
 
 # Install package
-sudo apt-get installl ../griddb_*_amd64.deb
+sudo apt-get install ../griddb_*_amd64.deb
 
 
 
