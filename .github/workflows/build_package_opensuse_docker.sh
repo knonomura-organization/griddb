@@ -50,4 +50,4 @@ docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_F
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "ls"
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "ls /griddb"
 
-docker cp ${DOCKER_CONTAINER_NAME_OPENSUSE}:/griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-opensuse.x86_64.rpm .
+docker cp ${DOCKER_CONTAINER_NAME_OPENSUSE}:/griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm ./griddb-$GRIDDB_VERSION-opensuse.x86_64.rpm
