@@ -12,7 +12,7 @@ docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "zypper addrepo htt
 && zypper --non-interactive --no-gpg-checks --quiet install --auto-agree-with-licenses gcc48-c++"
 
 #install dependency, support for griddb sever
-docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "zypper install -y make automake autoconf libpng16-devel java-11-openjdk ant zlib-devel tcl net-tools python"
+docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "zypper install -y make automake autoconf libpng16-devel java-11-openjdk ant zlib-devel tcl net-tools python zip unzip rpm-build "
 
 #Create softlink gcc g++
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "ln -sf /usr/bin/g++-4.8 /usr/bin/g++ \
@@ -23,7 +23,6 @@ docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "cd griddb \
 && ./bootstrap.sh \
 && ./configure \
 && make"
-
 
 # Get griddb version and set source code zip file name, ex "4.5.2" and "griddb-4.5.2.zip"
 echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) >output.txt
