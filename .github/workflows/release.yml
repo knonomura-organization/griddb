@@ -10,19 +10,14 @@ jobs:
       CENTOS_VERSION: 7
       OPENSUSE_VERSION: 15.1
       DOCKER_CONTAINER_NAME_CENTOS: "dockerCentOS"
+      DOCKER_CONTAINER_NAME_OPENSUSE: "dockerOpenSuse"
     steps:
       - uses: actions/checkout@v1
 
       - name: Build package for Ubuntu
-        run: |
-          sudo apt-get install gcc-4.8
-          sudo apt-get install g++-4.8
-          sudo apt-get install tcl debhelper libz-dev libsqlite3-dev
-          export CC=gcc-4.8
-          export CC_FOR_BUILD=gcc-4.8
-          export CXX=g++-4.8
-          export CXX_FOR_BUILD=g++-4.8
-          dpkg-buildpackage -b
+        run: |./.github/workflows/build_package_ubuntu_docker.sh
+
+          
 
       - name: Upload deb file
         uses: svenstaro/upload-release-action@v2
@@ -35,6 +30,18 @@ jobs:
 
       - name: Build package for CentOS
         run: ./.github/workflows/build_package_centos_docker.sh
+
+      - name: Upload rpm file
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: griddb-*.rpm
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+
+      - name: Build package for OpenSuse
+        run: ./.github/workflows/build_package_opensuse_docker.sh
 
       - name: Upload rpm file
         uses: svenstaro/upload-release-action@v2
