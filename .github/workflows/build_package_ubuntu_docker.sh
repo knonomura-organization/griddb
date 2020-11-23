@@ -12,5 +12,8 @@ dpkg-buildpackage -b
 # Install package
 sudo apt-get install ../griddb_*_amd64.deb
 
+su - gsadm -c "gs_passwd admin -p admin"
 
-
+sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"dockerGridDB\"/g \
+/var/lib/gridstore/conf/gs_cluster.json
+su -c "gs_startnode -w -u admin/admin; gs_joincluster -c dockerGridDB -u admin/admin" - gsadm
