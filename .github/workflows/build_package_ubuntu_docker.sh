@@ -12,13 +12,13 @@ dpkg-buildpackage -b
 # Install package
 sudo apt-get install ../griddb_*_amd64.deb
 
-sudo su - gsadm -c "gs_passwd admin -p ${ADMIN_PASSWORD}"
+sudo env ADMIN_PASSWORD="$ADMIN_PASSWORD" su - gsadm -c "gs_passwd admin -p ${ADMIN_PASSWORD}"
 
-sudo sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME}\"/g \
+sudo env GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME}\"/g \
 /var/lib/gridstore/conf/gs_cluster.json
 
 # Start server
-sudo su - gsadm -c "gs_startnode -w -u admin/admin; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}"
+sudo env GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" ADMIN_PASSWORD="$ADMIN_PASSWORD" su - gsadm -c "gs_startnode -w -u admin/admin; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}"
 
 # Get griddb version
 echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) >output.txt
