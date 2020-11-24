@@ -7,8 +7,11 @@ jobs:
     name: Create and release deb files
     runs-on: ubuntu-18.04
     env:
-      GRIDDB_SERVER_NAME_UBUNTU: "griddb"
-      ADMIN_PASSWORD: "admin"
+      GRIDDB_SERVER_NAME: "griddb"
+      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
+      GRIDDB_NOTIFICATION_PORT: "31999"
+      GRIDDB_USERNAME: "admin"
+      GRIDDB_PASSWORD: "admin"
     steps:
       - uses: actions/checkout@v1
 
