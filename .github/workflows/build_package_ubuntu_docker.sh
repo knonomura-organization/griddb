@@ -14,9 +14,7 @@ dpkg-buildpackage -b
 
 # Install package and config GridDB server
 sudo apt-get install ../griddb_*_amd64.deb
-
 sudo env GRIDDB_PASSWORD="$GRIDDB_PASSWORD" su - gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
-
 sudo env GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME}\"/g \
 /var/lib/gridstore/conf/gs_cluster.json
 
