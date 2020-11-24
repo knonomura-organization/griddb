@@ -16,8 +16,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build package for Ubuntu
-        run: ./.github/workflows/build_package_ubuntu_docker.sh
-          
+        run: ./.github/workflows/build_package_ubuntu.sh
 
       - name: Upload deb file
         uses: svenstaro/upload-release-action@v2
