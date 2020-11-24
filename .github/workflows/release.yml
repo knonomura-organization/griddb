@@ -9,7 +9,7 @@ jobs:
     env:
       CENTOS_VERSION: 7
       OPENSUSE_VERSION: 15.1
-      GRIDDB_SERVER_NAME_UBUNTUN: "griddb"
+      GRIDDB_SERVER_NAME_UBUNTU: "griddb"
       ADMIN_PASSWORD: "admin"
       DOCKER_CONTAINER_NAME_CENTOS: "dockerCentOS"
       DOCKER_CONTAINER_NAME_OPENSUSE: "dockerOpenSuse"

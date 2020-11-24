@@ -1,24 +1,24 @@
 #!/bin/sh -xe
 
-#pull and run image docker opensuse
+# Pull and run image docker opensuse
 sudo apt-get update
 docker pull opensuse/leap:${OPENSUSE_VERSION}
 docker run --name ${DOCKER_CONTAINER_NAME_OPENSUSE} -ti -d -v `pwd`:/griddb --env GS_LOG=/griddb/log --env GS_HOME=/griddb opensuse/leap:${OPENSUSE_VERSION}
 
-#install gcc-4.8 and g++-4.8
+# Install gcc-4.8 and g++-4.8
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "zypper addrepo https://download.opensuse.org/repositories/devel:gcc/openSUSE_Leap_15.1/devel:gcc.repo \
 && zypper --non-interactive --no-gpg-checks --quiet ref \
 && zypper --non-interactive --no-gpg-checks --quiet install --auto-agree-with-licenses gcc48 \
 && zypper --non-interactive --no-gpg-checks --quiet install --auto-agree-with-licenses gcc48-c++"
 
-#install dependency, support for griddb sever
-docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "zypper install -y make automake autoconf libpng16-devel java-11-openjdk ant zlib-devel tcl net-tools python zip unzip rpm-build "
+# Install dependency, support for griddb sever
+docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "zypper install -y make automake autoconf libpng16-devel java-11-openjdk ant zlib-devel tcl net-tools python zip unzip rpm-build"
 
-#Create softlink gcc g++
+# Create softlink gcc g++
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "ln -sf /usr/bin/g++-4.8 /usr/bin/g++ \
 && ln -sf /usr/bin/gcc-4.8 /usr/bin/gcc"
 
-#config sever
+# Build package
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "cd griddb \
 && ./bootstrap.sh \
 && ./configure \
@@ -48,3 +48,18 @@ docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "ls"
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "ls /griddb"
 
 docker cp ${DOCKER_CONTAINER_NAME_OPENSUSE}:/griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm ./griddb-$GRIDDB_VERSION-opensuse.x86_64.rpm
+
+# Install package and setup env
+docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "zypper install griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm     \
+&&  su - gsadm -c \"gs_passwd admin -p ${ADMIN_PASSWORD}\"     \
+sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME}\"/g \\ /var/lib/gridstore/conf/gs_cluster.json"
+
+# Start GridDB server
+docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su - gsadm -c \"gs_startnode -w -u admin/admin; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}\""
+
+# Run sample
+docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar    \
+&& mkdir gsSample    \
+&& cp /usr/griddb-$GRIDDB_VERSION/docs/sample/program/Sample1.java gsSample/.    \
+&& javac gsSample/Sample1.java    \
+&& java gsSample/Sample1 239.0.0.1 31999 ${GRIDDB_SERVER_NAME_UBUNTU} admin ${ADMIN_PASSWORD}"
