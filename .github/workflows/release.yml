@@ -4,16 +4,11 @@ on: create
 
 jobs:
   release:
-    name: Create and release deb/rpm files
+    name: Create and release deb files
     runs-on: ubuntu-18.04
     env:
-      CENTOS_VERSION: 7
-      OPENSUSE_VERSION: 15.1
       GRIDDB_SERVER_NAME_UBUNTU: "griddb"
-      GRIDDB_SERVER_NAME_OPENSUSE: "griddb"
       ADMIN_PASSWORD: "admin"
-      DOCKER_CONTAINER_NAME_CENTOS: "dockerCentOS"
-      DOCKER_CONTAINER_NAME_OPENSUSE: "dockerOpenSuse"
     steps:
       - uses: actions/checkout@v1
 
@@ -30,26 +25,3 @@ jobs:
           overwrite: true
           file_glob: true
 
-      - name: Build package for CentOS
-        run: ./.github/workflows/build_package_centos_docker.sh
-
-      - name: Upload rpm file
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: griddb-*.rpm
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-      - name: Build package for OpenSuse
-        run: ./.github/workflows/build_package_opensuse_docker.sh
-
-      - name: Upload rpm file
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: griddb-*.rpm
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
