@@ -51,8 +51,8 @@ docker cp ${DOCKER_CONTAINER_NAME_OPENSUSE}:/griddb/installer/RPMS/x86_64/griddb
 
 # Install package and setup env
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "rpm -ivh griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm     \
-&&  su - gsadm -c \"gs_passwd admin -p ${ADMIN_PASSWORD}\"     \
-sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME_OPENSUSE}\"/g \\ /var/lib/gridstore/conf/gs_cluster.json"
+&& su - gsadm -c \"gs_passwd admin -p ${ADMIN_PASSWORD}\"     \
+&& sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME_OPENSUSE}\"/g \\ /var/lib/gridstore/conf/gs_cluster.json"
 
 # Start GridDB server
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su - gsadm -c \"gs_startnode -w -u admin/admin; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}\""
