@@ -33,5 +33,5 @@ javac gsSample/Sample1.java
 java gsSample/Sample1 ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
 
 # Stop server
-gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w
-gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w
+sudo su - gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+sudo su - gsadm -c "gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
