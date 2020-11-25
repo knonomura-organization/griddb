@@ -1,9 +1,9 @@
 #!/bin/sh -xe
 
 # Install dependencies packages
-sudo apt-get install gcc-4.8
-sudo apt-get install g++-4.8
-sudo apt-get install tcl debhelper libz-dev libsqlite3-dev default-jdk default-jre
+sudo apt-get install -y gcc-4.8
+sudo apt-get install -y g++-4.8
+sudo apt-get install -y tcl debhelper libz-dev libsqlite3-dev default-jdk default-jre
 export CC=gcc-4.8
 export CC_FOR_BUILD=gcc-4.8
 export CXX=g++-4.8
