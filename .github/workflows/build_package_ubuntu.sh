@@ -24,6 +24,7 @@ sudo env GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" GRIDDB_PASSWORD="$GRIDDB_PASSW
 # Get GridDB version
 echo $(grep -Eo '[0-9\.]+' debian/changelog) > output.txt
 export GRIDDB_VERSION=$(awk '{print $1}' output.txt)
+rm output.txt
 
 # Run sample
 export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar
