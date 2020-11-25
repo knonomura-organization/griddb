@@ -22,7 +22,7 @@ sudo env GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" sed -i -e s/\"clusterName\":\"
 sudo env GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" GRIDDB_PASSWORD="$GRIDDB_PASSWORD" su - gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
 
 # Get GridDB version
-echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) > output.txt
+echo $(grep -Eo '[0-9\.]+' debian/changelog) > output.txt
 export GRIDDB_VERSION=$(awk '{print $1}' output.txt)
 
 # Run sample
@@ -35,3 +35,7 @@ java gsSample/Sample1 ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT}
 # Stop server
 sudo su - gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
 sudo su - gsadm -c "gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+
+# Uninstall package
+PACKAGE_NAME=$(sed -nr '1s/^([^ ]+).*/\1/p' debian/changelog)
+sudo dpkg -r $PACKAGE_NAME
