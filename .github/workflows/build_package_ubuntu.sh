@@ -12,6 +12,9 @@ export CXX_FOR_BUILD=g++-4.8
 # Build package
 dpkg-buildpackage -b
 
+# Check package information
+sudo dpkg-deb -l ../griddb_*_amd64.deb
+
 # Install package and config GridDB server
 sudo dpkg -i ../griddb_*_amd64.deb
 sudo env GRIDDB_PASSWORD="$GRIDDB_PASSWORD" su - gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
