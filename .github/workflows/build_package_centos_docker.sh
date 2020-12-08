@@ -35,8 +35,23 @@ docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" ${DOCKER_CONTAINER_NAME_CENTOS} 
 
 # Install package and config GridDB server
 docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "rpm -ivh griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm"
+docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "su - gsadm -c \"gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}\"    \
+&& sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME}\"/g \
+/var/lib/gridstore/conf/gs_cluster.json"
 
-docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "su - gsadm -c \"gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}\""
+# Start server
+docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c " su - gsadm -c \"gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
+
+# Run sample
+docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_NOTIFICATION_ADDRESS="$GRIDDB_NOTIFICATION_ADDRESS" -e GRIDDB_NOTIFICATION_PORT="$GRIDDB_NOTIFICATION_PORT" -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar    \
+&& mkdir gsSample    \
+&& cp /usr/griddb-$GRIDDB_VERSION/docs/sample/program/Sample1.java gsSample/.    \
+&& javac gsSample/Sample1.java    \
+&& java gsSample/Sample1 ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}"
+
+# Stop server
+docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "su - gsadm -c \"gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\"    \
+&& su - gsadm -c \"gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
 
 # Copy rpm file to host
 docker cp ${DOCKER_CONTAINER_NAME_CENTOS}:/griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm .
