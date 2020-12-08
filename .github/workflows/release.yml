@@ -12,7 +12,7 @@ jobs:
       GRIDDB_NOTIFICATION_PORT: "31999"
       GRIDDB_USERNAME: "admin"
       GRIDDB_PASSWORD: "admin"
-      CENTOS_VERSION: 7
+      CENTOS_VERSION: 7.8.2003
       DOCKER_CONTAINER_NAME_CENTOS: "dockerCentOS"
       GRIDDB_PACKAGE_NAME: "griddb"
     steps:
