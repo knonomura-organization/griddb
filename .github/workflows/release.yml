@@ -23,11 +23,11 @@ jobs:
       - name: Build package for CentOS
         run: ./.github/workflows/build_package_centos_docker.sh
 
-      - name: Upload deb/rpm files griddb-*.rpm
+      - name: Upload deb/rpm files
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ../griddb_*_amd64.deb
+          file: ../griddb_*_amd64.deb griddb-*.rpm
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
