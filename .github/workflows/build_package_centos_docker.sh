@@ -40,7 +40,8 @@ docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_PASSWORD="$GRI
 /var/lib/gridstore/conf/gs_cluster.json"
 
 # Start server
-docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c " su - gsadm -c \"gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
+docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c " su - gsadm -c \"gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}    \
+&& gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
 
 # Run sample
 docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_NOTIFICATION_ADDRESS="$GRIDDB_NOTIFICATION_ADDRESS" -e GRIDDB_NOTIFICATION_PORT="$GRIDDB_NOTIFICATION_PORT" -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar    \
@@ -52,6 +53,9 @@ docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_NOTIFICATION_A
 # Stop server
 docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "su - gsadm -c \"gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\"    \
 && su - gsadm -c \"gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
+
+# Uninstall package
+docker exec ${DOCKER_CONTAINER_NAME_CENTOS} -e GRIDDB_PACKAGE_NAME="$GRIDDB_PACKAGE_NAME" /bin/bash -xec "yum remove ${GRIDDB_PACKAGE_NAME}"
 
 # Copy rpm file to host
 docker cp ${DOCKER_CONTAINER_NAME_CENTOS}:/griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm .
