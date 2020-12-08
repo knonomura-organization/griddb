@@ -12,6 +12,8 @@ jobs:
       GRIDDB_NOTIFICATION_PORT: "31999"
       GRIDDB_USERNAME: "admin"
       GRIDDB_PASSWORD: "admin"
+      CENTOS_VERSION: 7
+      DOCKER_CONTAINER_NAME_CENTOS: "dockerCentOS"
     steps:
       - uses: actions/checkout@v1
 
