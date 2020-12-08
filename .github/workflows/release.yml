@@ -18,20 +18,20 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Build package for Ubuntu
-        run: ./.github/workflows/build_package_ubuntu.sh
+#      - name: Build package for Ubuntu
+#        run: ./.github/workflows/build_package_ubuntu.sh
 
       - name: Build package for CentOS
         run: ./.github/workflows/build_package_centos_docker.sh
 
-      - name: Upload deb file
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ../griddb_*_amd64.deb
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
+#      - name: Upload deb file
+#        uses: svenstaro/upload-release-action@v2
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          file: ../griddb_*_amd64.deb
+#          tag: ${{ github.ref }}
+#          overwrite: true
+#          file_glob: true
 
       - name: Upload rpm files
         uses: svenstaro/upload-release-action@v2
