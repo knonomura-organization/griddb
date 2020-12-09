@@ -2,9 +2,9 @@
 
 # Pull and run image docker centos7
 docker pull centos:centos${CENTOS_VERSION}
-pwd
 docker run --name ${DOCKER_CONTAINER_NAME_CENTOS} -ti -d -v `pwd`:/griddb centos:centos${CENTOS_VERSION}
 docker volume ls
+
 # Install dependency, support for griddb sever
 docker exec ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -xec "yum install automake make gcc gcc-c++ libpng-devel java ant zlib-devel tcl.x86_64 zip unzip rpm-build -y"
 

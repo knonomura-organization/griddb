@@ -3,7 +3,7 @@
 # Pull and run image docker opensuse
 sudo apt-get update
 docker pull opensuse/leap:${OPENSUSE_VERSION}
-docker run --name ${DOCKER_CONTAINER_NAME_OPENSUSE} -ti -d -v `pwd`:/griddb --env GS_LOG=/griddb/log --env GS_HOME=/griddb opensuse/leap:${OPENSUSE_VERSION}
+docker run --name ${DOCKER_CONTAINER_NAME_OPENSUSE} -ti -d -v `pwd`:/griddb opensuse/leap:${OPENSUSE_VERSION}
 
 # Install gcc-4.8 and g++-4.8
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -xec "zypper addrepo https://download.opensuse.org/repositories/devel:gcc/openSUSE_Leap_15.1/devel:gcc.repo \
@@ -43,16 +43,10 @@ docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_F
 && cd griddb/installer   \
 && rpmbuild --define=\"_topdir /griddb/installer\" -bb --clean SPECS/griddb.spec"
 
-# Copy rpm file to host
-docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "ls"
-docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "ls /griddb"
-
-docker cp ${DOCKER_CONTAINER_NAME_OPENSUSE}:/griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm ./griddb-$GRIDDB_VERSION-opensuse.x86_64.rpm
-
 # Install package and setup env
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "rpm -ivh griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm     \
 && su - gsadm -c \"gs_passwd admin -p ${ADMIN_PASSWORD}\"     \
-&& sed -i -e s/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME_OPENSUSE}\"/g \\ /var/lib/gridstore/conf/gs_cluster.json"
+&& sed -i -e 's/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME_OPENSUSE}\"/g' /var/lib/gridstore/conf/gs_cluster.json"
 
 # Start GridDB server
 docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su - gsadm -c \"gs_startnode -w -u admin/admin; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}\""
@@ -63,3 +57,13 @@ docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "export CLASSPATH=${
 && cp /usr/griddb-$GRIDDB_VERSION/docs/sample/program/Sample1.java gsSample/.    \
 && javac gsSample/Sample1.java    \
 && java gsSample/Sample1 239.0.0.1 31999 ${GRIDDB_SERVER_NAME_OPENSUSE} admin ${ADMIN_PASSWORD}"
+
+# Stop server
+docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su -l gsadm -c \"gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
+docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su -l gsadm -c \"gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
+
+# Uninstall package
+docker exec -e GRIDDB_PACKAGE_NAME="$GRIDDB_PACKAGE_NAME" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "zypper rm -u ${GRIDDB_PACKAGE_NAME}"
+
+# Copy rpm file to host
+docker cp ${DOCKER_CONTAINER_NAME_OPENSUSE}:/griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm ./griddb-$GRIDDB_VERSION-opensuse.x86_64.rpm
