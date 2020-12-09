@@ -55,7 +55,7 @@ docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PA
 docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash  -c "su -l gsadm -c \"gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
 
 # Uninstall package
-docker exec ${DOCKER_CONTAINER_NAME_CENTOS} -e GRIDDB_PACKAGE_NAME="$GRIDDB_PACKAGE_NAME" /bin/bash -xec "rpm -e ${GRIDDB_PACKAGE_NAME}"
+docker exec -e GRIDDB_PACKAGE_NAME="$GRIDDB_PACKAGE_NAME" ${DOCKER_CONTAINER_NAME_CENTOS} /bin/bash -c "rpm -e ${GRIDDB_PACKAGE_NAME}"
 
 # Copy rpm file to host
 docker cp ${DOCKER_CONTAINER_NAME_CENTOS}:/griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm .
