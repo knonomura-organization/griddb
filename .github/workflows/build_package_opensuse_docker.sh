@@ -45,22 +45,23 @@ docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_F
 
 # Install package and setup env
 docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "rpm -ivh griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm     \
-&& su -l gsadm -c \"gs_passwd admin -p ${ADMIN_PASSWORD}\"     \
+&& su -l gsadm -c \"gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}\"     \
 && sed -i -e 's/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME_OPENSUSE}\"/g' /var/lib/gridstore/conf/gs_cluster.json"
 
 # Start GridDB server
-docker -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su -l gsadm -c \"gs_startnode -w -u admin/admin; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}\""
+docker -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "su -l gsadm -c \"gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}    \
+&& gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}\""
 
 # Run sample
 docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_NOTIFICATION_ADDRESS="$GRIDDB_NOTIFICATION_ADDRESS" -e GRIDDB_NOTIFICATION_PORT="$GRIDDB_NOTIFICATION_PORT" -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar    \
 && mkdir gsSample    \
 && cp /usr/griddb-$GRIDDB_VERSION/docs/sample/program/Sample1.java gsSample/.    \
 && javac gsSample/Sample1.java    \
-&& java gsSample/Sample1 239.0.0.1 31999 ${GRIDDB_SERVER_NAME_OPENSUSE} admin ${ADMIN_PASSWORD}"
+&& java gsSample/Sample1 239.0.0.1 31999 ${GRIDDB_SERVER_NAME_OPENSUSE} ${GRIDDB_USERNAME} ${ADMIN_PASSWORD}"
 
 # Stop server
-docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su -l gsadm -c \"gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
-docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su -l gsadm -c \"gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
+docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "su -l gsadm -c \"gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
+docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "su -l gsadm -c \"gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""
 
 # Uninstall package
 docker exec -e GRIDDB_PACKAGE_NAME="$GRIDDB_PACKAGE_NAME" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "zypper rm -u ${GRIDDB_PACKAGE_NAME}"
