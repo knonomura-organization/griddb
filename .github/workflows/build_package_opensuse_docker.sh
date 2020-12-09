@@ -44,15 +44,15 @@ docker exec -e GRIDDB_VERSION="$GRIDDB_VERSION" -e GRIDDB_FOLDER_NAME="$GRIDDB_F
 && rpmbuild --define=\"_topdir /griddb/installer\" -bb --clean SPECS/griddb.spec"
 
 # Install package and setup env
-docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "rpm -ivh griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm     \
-&& su - gsadm -c \"gs_passwd admin -p ${ADMIN_PASSWORD}\"     \
+docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "rpm -ivh griddb/installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm     \
+&& su -l gsadm -c \"gs_passwd admin -p ${ADMIN_PASSWORD}\"     \
 && sed -i -e 's/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME_OPENSUSE}\"/g' /var/lib/gridstore/conf/gs_cluster.json"
 
 # Start GridDB server
-docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su - gsadm -c \"gs_startnode -w -u admin/admin; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}\""
+docker -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "su -l gsadm -c \"gs_startnode -w -u admin/admin; gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}\""
 
 # Run sample
-docker exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar    \
+docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_NOTIFICATION_ADDRESS="$GRIDDB_NOTIFICATION_ADDRESS" -e GRIDDB_NOTIFICATION_PORT="$GRIDDB_NOTIFICATION_PORT" -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar    \
 && mkdir gsSample    \
 && cp /usr/griddb-$GRIDDB_VERSION/docs/sample/program/Sample1.java gsSample/.    \
 && javac gsSample/Sample1.java    \
