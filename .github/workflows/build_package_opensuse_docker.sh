@@ -49,15 +49,15 @@ docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_PASSWORD="$GRI
 && sed -i -e 's/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME_OPENSUSE}\"/g' /var/lib/gridstore/conf/gs_cluster.json"
 
 # Start GridDB server
-docker -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" exec ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "su -l gsadm -c \"gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}    \
-&& gs_joincluster -c ${GRIDDB_SERVER_NAME} -u admin/${ADMIN_PASSWORD}\""
+docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "su -l gsadm -c \"gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}    \
+&& gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}\""
 
 # Run sample
 docker exec -e GRIDDB_SERVER_NAME="$GRIDDB_SERVER_NAME" -e GRIDDB_NOTIFICATION_ADDRESS="$GRIDDB_NOTIFICATION_ADDRESS" -e GRIDDB_NOTIFICATION_PORT="$GRIDDB_NOTIFICATION_PORT" -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash  -c "export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar    \
 && mkdir gsSample    \
 && cp /usr/griddb-$GRIDDB_VERSION/docs/sample/program/Sample1.java gsSample/.    \
 && javac gsSample/Sample1.java    \
-&& java gsSample/Sample1 239.0.0.1 31999 ${GRIDDB_SERVER_NAME_OPENSUSE} ${GRIDDB_USERNAME} ${ADMIN_PASSWORD}"
+&& java gsSample/Sample1 239.0.0.1 31999 ${GRIDDB_SERVER_NAME_OPENSUSE} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}"
 
 # Stop server
 docker exec -e GRIDDB_USERNAME="$GRIDDB_USERNAME" -e GRIDDB_PASSWORD="$GRIDDB_PASSWORD" ${DOCKER_CONTAINER_NAME_OPENSUSE} /bin/bash -c "su -l gsadm -c \"gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w\""

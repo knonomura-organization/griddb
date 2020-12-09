@@ -26,7 +26,7 @@ jobs:
 #      - name: Build package for CentOS
 #        run: ./.github/workflows/build_package_centos_docker.sh
 
-      - name: Build package for CentOS
+      - name: Build package for OpenSuse
         run: ./.github/workflows/build_package_opensuse_docker.sh
 
 #      - name: Upload deb file
