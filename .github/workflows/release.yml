@@ -4,7 +4,7 @@ on: create
 
 jobs:
   release:
-    name: Create and release deb and rpm files
+    name: Create and release deb/rpm files
     runs-on: ubuntu-18.04
     env:
       GRIDDB_SERVER_NAME: "griddb"
