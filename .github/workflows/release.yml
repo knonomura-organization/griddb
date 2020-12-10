@@ -21,4 +21,8 @@ jobs:
       - name: Build Griddb server
         run: ./.github/workflows/script/centos/centos_build_griddb.sh
 
+      - name: Build Griddb server
+        run: ./.github/workflows/script/centos/centos_build_griddb.sh
+
+
 
