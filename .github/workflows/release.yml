@@ -22,7 +22,7 @@ jobs:
         run: ./.github/workflows/script/centos/centos_build_griddb.sh
 
       - name: Create rpm for CentOS
-        run: ./.github/workflows/script/centos/centos_build_griddb.sh
+        run: ./.github/workflows/script/centos/build_rpm.sh
 
 
 
