@@ -116,12 +116,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Create deb for Ubuntu
-        run: g-buildpackage -b
+      - name: Create deb file for Ubuntu
+        run: dpkg-buildpackage -b
       - name: Check package information
-        run: dpgk -L ../griddb_*_amd64.deb
+        run: dpkg-deb -I ../griddb_*_amd64.deb
       - name: Install package
-        run: sudo apt-get install ../griddb_*_amd64.deb
+        run: sudo dpkg -i ../griddb_*_amd64.deb
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
