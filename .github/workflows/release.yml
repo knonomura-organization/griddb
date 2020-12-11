@@ -2,19 +2,27 @@ name: Create package on release
 
 on: create
 
+env:
+  GRIDDB_SERVER_NAME: "griddb"
+  GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
+  GRIDDB_NOTIFICATION_PORT: "31999"
+  GRIDDB_USERNAME: "admin"
+  GRIDDB_PASSWORD: "admin"
+  GRIDDB_PACKAGE_NAME: "griddb"
+
 jobs:
   release_rpm_centos_7:
     name: Create and release rpm file for CentOS7
     runs-on: ubuntu-18.04
     container: 
       image: duongntt/griddb-centos7
-    env:
-      GRIDDB_SERVER_NAME: "griddb"
-      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
-      GRIDDB_NOTIFICATION_PORT: "31999"
-      GRIDDB_USERNAME: "admin"
-      GRIDDB_PASSWORD: "admin"
-      GRIDDB_PACKAGE_NAME: "griddb"
+#    env:
+#      GRIDDB_SERVER_NAME: "griddb"
+#      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
+#      GRIDDB_NOTIFICATION_PORT: "31999"
+#      GRIDDB_USERNAME: "admin"
+#      GRIDDB_PASSWORD: "admin"
+#      GRIDDB_PACKAGE_NAME: "griddb"
     steps:
       - uses: actions/checkout@v1
 
@@ -56,13 +64,13 @@ jobs:
     runs-on: ubuntu-18.04
     container: 
       image: duongntt/griddb-opensuse-15.1
-    env:
-      GRIDDB_SERVER_NAME: "griddb"
-      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
-      GRIDDB_NOTIFICATION_PORT: "31999"
-      GRIDDB_USERNAME: "admin"
-      GRIDDB_PASSWORD: "admin"
-      GRIDDB_PACKAGE_NAME: "griddb"
+#    env:
+#      GRIDDB_SERVER_NAME: "griddb"
+#      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
+#      GRIDDB_NOTIFICATION_PORT: "31999"
+#      GRIDDB_USERNAME: "admin"
+#      GRIDDB_PASSWORD: "admin"
+#      GRIDDB_PACKAGE_NAME: "griddb"
     steps:
       - uses: actions/checkout@v1
 
@@ -106,13 +114,13 @@ jobs:
     runs-on: ubuntu-18.04
     container: 
       image: duongntt/griddb-ubuntu-18.04
-    env:
-      GRIDDB_SERVER_NAME: "griddb"
-      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
-      GRIDDB_NOTIFICATION_PORT: "31999"
-      GRIDDB_USERNAME: "admin"
-      GRIDDB_PASSWORD: "admin"
-      GRIDDB_PACKAGE_NAME: "griddb"
+#    env:
+#      GRIDDB_SERVER_NAME: "griddb"
+#      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
+#      GRIDDB_NOTIFICATION_PORT: "31999"
+#      GRIDDB_USERNAME: "admin"
+#      GRIDDB_PASSWORD: "admin"
+#      GRIDDB_PACKAGE_NAME: "griddb"
     steps:
       - uses: actions/checkout@v1
 
