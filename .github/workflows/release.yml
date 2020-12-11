@@ -23,7 +23,7 @@ jobs:
       - name: Create rpm for CentOS
         run: ./.github/workflows/script/centos/build_rpm.sh
       - name: Check package information
-        run: ./.github/workflows/script/centos/dislay_package_information.sh
+        run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
         run: ./.github/workflows/script/centos/install_package.sh
       - name: Config GridDB server
@@ -41,9 +41,7 @@ jobs:
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
           su -l gsadm -c "gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Uninstall package
-        run: |
-          su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
-          su -l gsadm -c "gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+        run: rpm -e ${GRIDDB_PACKAGE_NAME}
       - name: Upload rpm files
         uses: svenstaro/upload-release-action@v2
         with:
