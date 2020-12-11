@@ -20,19 +20,35 @@ jobs:
 
       - name: Build Griddb server
         run: ./.github/workflows/script/centos/centos_build_griddb.sh
-
       - name: Create rpm for CentOS
         run: ./.github/workflows/script/centos/build_rpm.sh
-
       - name: Check package information
         run: ./.github/workflows/script/centos/dislay_package_information.sh
-
       - name: Install package
         run: ./.github/workflows/script/centos/install_package.sh
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
           su -l gsadm -c "sed -i 's/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME}\"/g' /var/lib/gridstore/conf/gs_cluster.json"
- 
-
-
+      - name: Start server
+        run: |
+          su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
+          su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+      - name: Run sample
+        run: ./.github/workflows/script/centos/run_sample.sh
+      - name: Stop server
+        run: |
+          su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+          su -l gsadm -c "gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+      - name: Uninstall package
+        run: |
+          su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+          su -l gsadm -c "gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+      - name: Upload rpm files
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
