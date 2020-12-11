@@ -1,7 +1,7 @@
 ls
 
 # Get griddb version and set source code zip file name, ex "4.5.2" and "griddb-4.5.2.zip"
-echo $(grep -Eo '[0-9\.]+' griddb/installer/SPECS/griddb.spec) > output.txt
+echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) > output.txt
 export GRIDDB_VERSION=$(awk '{print $1}' output.txt)
 echo $GRIDDB_VERSION
 export GRIDDB_FOLDER_NAME="griddb-${GRIDDB_VERSION}"
@@ -10,7 +10,9 @@ export GRIDDB_ZIP_FILE="${GRIDDB_FOLDER_NAME}.zip"
 echo $GRIDDB_ZIP_FILE
 rm output.txt
 
+
 # Create rpm file
+cd ..
 cp -rf griddb/ $GRIDDB_FOLDER_NAME
 rm -r $GRIDDB_FOLDER_NAME/.git
 zip -r $GRIDDB_ZIP_FILE $GRIDDB_FOLDER_NAME
