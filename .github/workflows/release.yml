@@ -24,5 +24,15 @@ jobs:
       - name: Create rpm for CentOS
         run: ./.github/workflows/script/centos/build_rpm.sh
 
+      - name: Check package information
+        run: ./.github/workflows/script/centos/dislay_package_information.sh
+
+      - name: Install package
+        run: ./.github/workflows/script/centos/install_package.sh
+      - name: Config GridDB server
+        run: |
+          su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
+          su -l gsadm -c "sed -i 's/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME}\"/g' /var/lib/gridstore/conf/gs_cluster.json"
+ 
 
 
