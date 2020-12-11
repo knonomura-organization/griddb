@@ -3,7 +3,7 @@ name: Create package on release
 on: create
 
 jobs:
-  release:
+  release_rpm_centos7:
     name: Create and release rpm file for CentOS7
     runs-on: ubuntu-18.04
     container: 
@@ -47,6 +47,56 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+
+  release_rpm_opensuse15.1:
+    name: Create and release rpm file for OpenSuse15.1
+    runs-on: ubuntu-18.04
+    container: 
+      image: duongntt/griddb-opensuse-15.1
+    env:
+      GRIDDB_SERVER_NAME: "griddb"
+      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
+      GRIDDB_NOTIFICATION_PORT: "31999"
+      GRIDDB_USERNAME: "admin"
+      GRIDDB_PASSWORD: "admin"
+      GRIDDB_PACKAGE_NAME: "griddb"
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Build Griddb server
+        run: ./.github/workflows/script/centos/centos_build_griddb.sh
+      - name: Create rpm for OpenSuse
+        run: ./.github/workflows/script/centos/build_rpm.sh
+      - name: Check package information
+        run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
+      - name: Install package
+        run: ./.github/workflows/script/centos/install_package.sh
+      - name: Config GridDB server
+        run: |
+          su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
+          su -l gsadm -c "sed -i 's/\"clusterName\":\"\"/\"clusterName\":\"${GRIDDB_SERVER_NAME}\"/g' /var/lib/gridstore/conf/gs_cluster.json"
+      - name: Start server
+        run: |
+          su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
+          su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+      - name: Run sample
+        run: ./.github/workflows/script/centos/run_sample.sh
+      - name: Stop server
+        run: |
+          su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+          su -l gsadm -c "gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
+      - name: Uninstall package
+        run: rpm -e ${GRIDDB_PACKAGE_NAME}
+      - name: Change package name
+        run: ./.github/workflows/script/opensuse/change_package_name.sh
+      - name: Upload rpm files
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: installer/RPMS/x86_64/griddb-*-opensuse.x86_64.rpm
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
