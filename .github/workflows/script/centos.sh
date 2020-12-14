@@ -25,11 +25,12 @@ function build_rpm {
 
 function build_griddb {
     # Build GridDB server
-    cd griddb
+    ls
+    #cd griddb
     ./bootstrap.sh
     ./configure
     make
-    cd ../
+    #cd ../
 }
 
 function install_griddb {
