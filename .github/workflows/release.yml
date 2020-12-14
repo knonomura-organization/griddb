@@ -18,9 +18,10 @@ jobs:
       image: duongntt/griddb-centos7
     steps:
       - uses: actions/checkout@v1
+      - name: Prepare bash shell functions
+        run: source ./.github/workflows/script/function.sh
       - name: Build Griddb server
-        run: |
-          ./.github/workflows/script/function.sh; build_griddb
+        run: build_griddb
       - name: Create rpm for CentOS
         run: source ./.github/workflows/script/function.sh && build_rpm
       - name: Check package information
