@@ -1,3 +1,5 @@
+#!/bin/sh
+
 function build_rpm {
     # Get griddb version and set source code zip file name, ex "4.5.2" and "griddb-4.5.2.zip"
     echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) > output.txt
