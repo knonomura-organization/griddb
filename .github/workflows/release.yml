@@ -25,7 +25,7 @@ jobs:
       - name: Check package information
         run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
-        run: install_griddb
+        run: . ./.github/workflows/script/function.sh && install_griddb
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
