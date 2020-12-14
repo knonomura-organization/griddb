@@ -49,10 +49,10 @@ function run_sample {
     mkdir gsSample
     cp /usr/griddb-*/docs/sample/program/Sample1.java gsSample/.
     javac gsSample/Sample1.java
-    notification_host = $1
-    notification_port = $2
-    cluster_name = $3
-    username = $4
-    password = $5
+    local notification_host=$1
+    local notification_port=$2
+    local cluster_name=$3
+    local username=$4
+    local password=$5
     java gsSample/Sample1 $notification_host $notification_port $cluster_name $username $password
 }
