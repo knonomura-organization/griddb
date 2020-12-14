@@ -23,7 +23,7 @@ jobs:
       - name: Build Griddb server
         run: build_griddb
       - name: Create rpm for CentOS
-        run:|
+        run: |
           ./.github/workflows/script/centos.sh
           build_rpm
       - name: Check package information
