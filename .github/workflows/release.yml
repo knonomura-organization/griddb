@@ -21,7 +21,7 @@ jobs:
       - name: Require bash functions which support other steps
         run: source ./.github/workflows/script/centos.sh
       - name: Build Griddb server
-        run: $(build_griddb)
+        run: source ./.github/workflows/script/centos.sh && build_griddb
       - name: Create rpm for CentOS
         run: build_rpm
       - name: Check package information
