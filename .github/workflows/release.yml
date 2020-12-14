@@ -16,24 +16,18 @@ jobs:
     runs-on: ubuntu-18.04
     container: 
       image: duongntt/griddb-centos7
-#    env:
-#      GRIDDB_SERVER_NAME: "griddb"
-#      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
-#      GRIDDB_NOTIFICATION_PORT: "31999"
-#      GRIDDB_USERNAME: "admin"
-#      GRIDDB_PASSWORD: "admin"
-#      GRIDDB_PACKAGE_NAME: "griddb"
     steps:
       - uses: actions/checkout@v1
-
+      - name: Require bash functions which support other steps
+        run: ./.github/workflows/script/centos.sh
       - name: Build Griddb server
-        run: ./.github/workflows/script/centos/centos_build_griddb.sh
+        run: build_griddb
       - name: Create rpm for CentOS
-        run: ./.github/workflows/script/centos/build_rpm.sh
+        run: build_rpm
       - name: Check package information
         run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
-        run: ./.github/workflows/script/centos/install_package.sh
+        run: install_griddb
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
@@ -43,7 +37,7 @@ jobs:
           su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
           su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Run sample
-        run: ./.github/workflows/script/centos/run_sample.sh
+        run: run_sample
       - name: Stop server
         run: |
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
@@ -64,13 +58,6 @@ jobs:
     runs-on: ubuntu-18.04
     container: 
       image: duongntt/griddb-opensuse-15.1
-#    env:
-#      GRIDDB_SERVER_NAME: "griddb"
-#      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
-#      GRIDDB_NOTIFICATION_PORT: "31999"
-#      GRIDDB_USERNAME: "admin"
-#      GRIDDB_PASSWORD: "admin"
-#      GRIDDB_PACKAGE_NAME: "griddb"
     steps:
       - uses: actions/checkout@v1
 
@@ -114,13 +101,6 @@ jobs:
     runs-on: ubuntu-18.04
     container: 
       image: duongntt/griddb-ubuntu-18.04
-#    env:
-#      GRIDDB_SERVER_NAME: "griddb"
-#      GRIDDB_NOTIFICATION_ADDRESS: "239.0.0.1"
-#      GRIDDB_NOTIFICATION_PORT: "31999"
-#      GRIDDB_USERNAME: "admin"
-#      GRIDDB_PASSWORD: "admin"
-#      GRIDDB_PACKAGE_NAME: "griddb"
     steps:
       - uses: actions/checkout@v1
 
@@ -154,3 +134,4 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
+
