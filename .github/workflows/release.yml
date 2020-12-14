@@ -24,8 +24,7 @@ jobs:
         run: build_griddb
       - name: Create rpm for CentOS
         run: |
-          ./.github/workflows/script/centos.sh
-          build_rpm()
+          ./.github/workflows/script/centos.sh && build_rpm()
       - name: Check package information
         run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
