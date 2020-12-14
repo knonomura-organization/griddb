@@ -18,16 +18,14 @@ jobs:
       image: duongntt/griddb-centos7
     steps:
       - uses: actions/checkout@v1
-      - name: Require bash functions which support other steps
-        run: source ./.github/workflows/script/centos.sh
       - name: Build Griddb server
-        run: source ./.github/workflows/script/centos.sh && build_griddb
+        run: source ./.github/workflows/script/function.sh && build_griddb
       - name: Create rpm for CentOS
-        run: source ./.github/workflows/script/centos.sh && build_rpm
+        run: source ./.github/workflows/script/function.sh && build_rpm
       - name: Check package information
         run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
-        run: source ./.github/workflows/script/centos.sh && install_griddb
+        run: source ./.github/workflows/script/function.sh && install_griddb
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
@@ -37,7 +35,7 @@ jobs:
           su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
           su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Run sample
-        run: source ./.github/workflows/script/centos.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: source ./.github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: |
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
@@ -62,13 +60,13 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build Griddb server
-        run: ./.github/workflows/script/centos/centos_build_griddb.sh
+        run: source ./.github/workflows/script/function.sh && build_griddb
       - name: Create rpm for OpenSuse
-        run: ./.github/workflows/script/centos/build_rpm.sh
+        run: source ./.github/workflows/script/function.sh && build_rpm
       - name: Check package information
         run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
-        run: ./.github/workflows/script/centos/install_package.sh
+        run: source ./.github/workflows/script/function.sh && install_griddb
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
@@ -78,7 +76,7 @@ jobs:
           su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
           su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Run sample
-        run: ./.github/workflows/script/centos/run_sample.sh
+        run: source ./.github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: |
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
@@ -86,7 +84,7 @@ jobs:
       - name: Uninstall package
         run: rpm -e ${GRIDDB_PACKAGE_NAME}
       - name: Change package name
-        run: ./.github/workflows/script/opensuse/change_package_name.sh
+        run: source ./.github/workflows/script/function.sh && opensuse_change_package_name
       - name: Upload rpm file
         uses: svenstaro/upload-release-action@v2
         with:
@@ -109,7 +107,7 @@ jobs:
       - name: Check package information
         run: dpkg-deb -I ../griddb_*_amd64.deb
       - name: Install package
-        run: sudo dpkg -i ../griddb_*_amd64.deb
+        run: dpkg -i ../griddb_*_amd64.deb
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
@@ -119,7 +117,7 @@ jobs:
           su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
           su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Run sample
-        run: ./.github/workflows/script/centos/run_sample.sh
+        run: source ./.github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: |
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
