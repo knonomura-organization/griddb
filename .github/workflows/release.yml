@@ -117,7 +117,7 @@ jobs:
           su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
           su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Run sample
-        run: ls -la && source .github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: ls -la && /bin/bash .github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: |
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
