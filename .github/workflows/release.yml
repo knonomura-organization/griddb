@@ -19,9 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build Griddb server
-        run: source ./.github/workflows/script/function.sh && build_griddb
+        run: ./.github/workflows/script/function.sh build_griddb
       - name: Create rpm for CentOS
-        run: ./.github/workflows/script/function.sh && build_rpm
+        run: source ./.github/workflows/script/function.sh && build_rpm
       - name: Check package information
         run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
