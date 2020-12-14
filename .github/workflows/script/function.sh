@@ -63,3 +63,10 @@ function opensuse_change_package_name {
     # Change file name to distinguish with CentOS package
     mv installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-opensuse.x86_64.rpm
 }
+
+
+echo "::set-env name=build_rpm::$build_rpm"
+echo "::set-env name=build_griddb::$build_griddb"
+echo "::set-env name=install_griddb::$install_griddb"
+echo "::set-env name=run_sample::$run_sample"
+echo "::set-env name=opensuse_change_package_name::$opensuse_change_package_name"
