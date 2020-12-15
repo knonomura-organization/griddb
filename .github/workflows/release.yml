@@ -14,18 +14,18 @@ jobs:
   release_rpm_centos_7:
     name: Create and release rpm file for CentOS7
     runs-on: ubuntu-18.04
-    container: 
+    container:
       image: duongntt/griddb-centos7
     steps:
       - uses: actions/checkout@v1
       - name: Build Griddb server
-        run: . ./.github/workflows/script/function.sh && build_griddb
+        run: . .github/workflows/script/function.sh && build_griddb
       - name: Create rpm for CentOS
-        run: . ./.github/workflows/script/function.sh && build_rpm
+        run: . .github/workflows/script/function.sh && build_rpm
       - name: Check package information
         run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
-        run: . ./.github/workflows/script/function.sh && install_griddb
+        run: . .github/workflows/script/function.sh && install_griddb
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
@@ -35,7 +35,7 @@ jobs:
           su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
           su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Run sample
-        run: . ./.github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: . .github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: |
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
@@ -54,18 +54,18 @@ jobs:
   release_rpm_opensuse15_1:
     name: Create and release rpm file for OpenSuse15.1
     runs-on: ubuntu-18.04
-    container: 
+    container:
       image: duongntt/griddb-opensuse-15.1
     steps:
       - uses: actions/checkout@v1
       - name: Build Griddb server
-        run: . ./.github/workflows/script/function.sh && build_griddb
+        run: . .github/workflows/script/function.sh && build_griddb
       - name: Create rpm for OpenSuse
-        run: . ./.github/workflows/script/function.sh && build_rpm
+        run: . .github/workflows/script/function.sh && build_rpm
       - name: Check package information
         run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
       - name: Install package
-        run: . ./.github/workflows/script/function.sh && install_griddb
+        run: . .github/workflows/script/function.sh && install_griddb
       - name: Config GridDB server
         run: |
           su -l gsadm -c "gs_passwd ${GRIDDB_USERNAME} -p ${GRIDDB_PASSWORD}"
@@ -75,7 +75,7 @@ jobs:
           su -l gsadm -c "gs_startnode -w -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD}"
           su -l gsadm -c "gs_joincluster -c ${GRIDDB_SERVER_NAME} -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Run sample
-        run: . ./.github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: . .github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: |
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
@@ -83,7 +83,7 @@ jobs:
       - name: Uninstall package
         run: rpm -e ${GRIDDB_PACKAGE_NAME}
       - name: Change package name
-        run: . ./.github/workflows/script/function.sh && opensuse_change_package_name
+        run: . .github/workflows/script/function.sh && opensuse_change_package_name
       - name: Upload rpm file
         uses: svenstaro/upload-release-action@v2
         with:
@@ -96,7 +96,7 @@ jobs:
   release_deb_ubuntu_18_04:
     name: Create and release deb file for Ubuntu 18.04
     runs-on: ubuntu-18.04
-    container: 
+    container:
       image: duongntt/griddb-ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
