@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function build_rpm {
+build_rpm() {
     # Get griddb version and set source code zip file name, ex "4.5.2" and "griddb-4.5.2.zip"
     echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) > output.txt
     export GRIDDB_VERSION=$(awk '{print $1}' output.txt)
@@ -23,14 +23,14 @@ function build_rpm {
     cd ../..
 }
 
-function build_griddb {
+build_griddb() {
     # Build GridDB server
     ./bootstrap.sh
     ./configure
     make
 }
 
-function install_griddb {
+install_griddb() {
     # Get griddb version and set source code zip file name, ex "4.5.2" and "griddb-4.5.2.zip"
     echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) > output.txt
     export GRIDDB_VERSION=$(awk '{print $1}' output.txt)
@@ -40,7 +40,7 @@ function install_griddb {
     rpm -ivh installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-linux.x86_64.rpm
 }
 
-function run_sample {
+run_sample() {
     # Run sample
     export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar
     mkdir gsSample
@@ -54,7 +54,7 @@ function run_sample {
     java gsSample/Sample1 $notification_host $notification_port $cluster_name $username $password
 }
 
-function opensuse_change_package_name {
+opensuse_change_package_name() {
     # Get griddb version and set source code zip file name, ex "4.5.2" and "griddb-4.5.2.zip"
     echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) > output.txt
     export GRIDDB_VERSION=$(awk '{print $1}' output.txt)
