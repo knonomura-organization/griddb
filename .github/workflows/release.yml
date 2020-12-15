@@ -58,7 +58,6 @@ jobs:
       image: duongntt/griddb-opensuse-15.1
     steps:
       - uses: actions/checkout@v1
-
       - name: Build Griddb server
         run: . ./.github/workflows/script/function.sh && build_griddb
       - name: Create rpm for OpenSuse
@@ -101,7 +100,6 @@ jobs:
       image: duongntt/griddb-ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
-
       - name: Create deb file for Ubuntu
         run: dpkg-buildpackage -b
       - name: Check package information
