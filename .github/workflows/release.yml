@@ -123,7 +123,7 @@ jobs:
           su -l gsadm -c "gs_stopcluster -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
           su -l gsadm -c "gs_stopnode -u ${GRIDDB_USERNAME}/${GRIDDB_PASSWORD} -w"
       - name: Uninstall package
-        run: rpm -e ${GRIDDB_PACKAGE_NAME}
+        run: dpkg -r ${GRIDDB_PACKAGE_NAME}
       - name: Upload deb file
         uses: svenstaro/upload-release-action@v2
         with:
