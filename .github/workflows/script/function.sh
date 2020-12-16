@@ -19,6 +19,7 @@ build_rpm() {
 
     # Create rpm file
     cd ..
+    ls -lah griddb/
     cp -rf griddb/ $griddb_folder_name
     rm -r $griddb_folder_name/.git
     zip -r $griddb_zip_file $griddb_folder_name
