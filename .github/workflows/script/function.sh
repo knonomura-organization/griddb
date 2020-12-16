@@ -19,9 +19,9 @@ build_rpm() {
 
     # Create rpm file
     cd ..
-    ls -lah griddb/
-    cp -rf griddb/ $griddb_folder_name
-    rm -r $griddb_folder_name/.git
+    #cp -rf griddb/ $griddb_folder_name
+    #rm -r $griddb_folder_name/.git
+    rsync -a --exclude=.git griddb/ $griddb_folder_name
     zip -r $griddb_zip_file $griddb_folder_name
     cp $griddb_zip_file griddb/installer/SOURCES/
     rm -rf $griddb_folder_name
