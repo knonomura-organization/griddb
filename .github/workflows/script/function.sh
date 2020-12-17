@@ -68,6 +68,6 @@ opensuse_change_package_name() {
     if [ ! -f installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm ]; then
         echo "griddb-$griddb_version-linux.x86_64.rpm not found !"
     fi
-    mv installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm installer/RPMS/x86_64/griddb-$GRIDDB_VERSION-opensuse.x86_64.rpm
+    mv installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm installer/RPMS/x86_64/griddb-$griddb_version-opensuse.x86_64.rpm
 }
 
