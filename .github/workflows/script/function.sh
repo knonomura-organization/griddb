@@ -19,8 +19,6 @@ build_rpm() {
 
     # Create rpm file
     cd ..
-    #cp -rf griddb/ $griddb_folder_name
-    #rm -r $griddb_folder_name/.git
     rsync -a --exclude=.git griddb/ $griddb_folder_name
     zip -r $griddb_zip_file $griddb_folder_name
     cp $griddb_zip_file griddb/installer/SOURCES/
@@ -69,5 +67,28 @@ opensuse_change_package_name() {
         echo "griddb-$griddb_version-linux.x86_64.rpm not found !"
     fi
     mv installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm installer/RPMS/x86_64/griddb-$griddb_version-opensuse.x86_64.rpm
+}
+
+config_griddb() {
+    local username=$1
+    local password=$2
+    local cluster_name=$3
+ su -l gsadm -c "gs_passwd $username -p $password"
+          su -l gsadm -c "sed -i 's/\"clusterName\":\"\"/\"clusterName\":\"$cluster_name\"/g' /var/lib/gridstore/conf/gs_cluster.json"
+}
+
+start_griddb() {
+    local username=$1
+    local password=$2
+    local cluster_name=$3
+    su -l gsadm -c "gs_startnode -w -u $username/$password"
+    su -l gsadm -c "gs_joincluster -c $cluster_name -u $username/$password -w"
+}
+
+stop_griddb() {
+    local username=$1
+    local password=$2
+    su -l gsadm -c "gs_stopcluster -u  $username/$password -w"
+    su -l gsadm -c "gs_stopnode -u  $username/$password -w"
 }
 
