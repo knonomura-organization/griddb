@@ -27,13 +27,18 @@ jobs:
       - name: Install package
         run: . .github/workflows/script/function.sh && install_griddb
       - name: Config GridDB server
-        run: . .github/workflows/script/function.sh && config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
+        run: . .github/workflows/script/function.sh &&  \
+             config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Start server
-        run: . .github/workflows/script/function.sh && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
+        run: . .github/workflows/script/function.sh &&  \
+             start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Run sample
-        run: . .github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: . .github/workflows/script/function.sh &&  \
+             run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT}  \
+                 ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
-        run: . .github/workflows/script/function.sh && stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: . .github/workflows/script/function.sh &&  \
+             stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Uninstall package
         run: rpm -e ${GRIDDB_PACKAGE_NAME}
       - name: Upload rpm file
@@ -61,13 +66,17 @@ jobs:
       - name: Install package
         run: . .github/workflows/script/function.sh && install_griddb
       - name: Config GridDB server
-        run: . .github/workflows/script/function.sh && config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
+        run: . .github/workflows/script/function.sh && \
+             config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Start server
-        run: . .github/workflows/script/function.sh && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
+        run: . .github/workflows/script/function.sh && \
+             start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Run sample
-        run: . .github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: . .github/workflows/script/function.sh && \
+             run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
-        run: . .github/workflows/script/function.sh && stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: . .github/workflows/script/function.sh && \
+             stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Uninstall package
         run: rpm -e ${GRIDDB_PACKAGE_NAME}
       - name: Change package name
@@ -95,13 +104,17 @@ jobs:
       - name: Install package
         run: dpkg -i ../griddb_*_amd64.deb
       - name: Config GridDB server
-        run: . .github/workflows/script/function.sh && config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
+        run: . .github/workflows/script/function.sh && \
+             config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Start server
         run: . .github/workflows/script/function.sh && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Run sample
-        run: . .github/workflows/script/function.sh && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: . .github/workflows/script/function.sh && \
+              run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} \
+                  ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
-        run: . .github/workflows/script/function.sh && stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+        run: . .github/workflows/script/function.sh && \
+             stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Uninstall package
         run: dpkg -r ${GRIDDB_PACKAGE_NAME}
       - name: Upload deb file

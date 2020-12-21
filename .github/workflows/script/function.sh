@@ -12,7 +12,8 @@ get_version() {
 }
 
 build_rpm() {
-    # Get griddb version and set source code zip file name, ex "4.5.2" and "griddb-4.5.2.zip"
+    # Get griddb version and set source code zip file name, 
+    #   ex "4.5.2" and "griddb-4.5.2.zip"
     local griddb_version=$(get_version)
     local griddb_folder_name="griddb-${griddb_version}"
     local griddb_zip_file="${griddb_folder_name}.zip"
@@ -56,7 +57,8 @@ run_sample() {
     local cluster_name=$3
     local username=$4
     local password=$5
-    java gsSample/Sample1 $notification_host $notification_port $cluster_name $username $password
+    java gsSample/Sample1 \
+        $notification_host $notification_port $cluster_name $username $password
 }
 
 opensuse_change_package_name() {
@@ -66,15 +68,16 @@ opensuse_change_package_name() {
     if [ ! -f installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm ]; then
         echo "griddb-$griddb_version-linux.x86_64.rpm not found !"
     fi
-    mv installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm installer/RPMS/x86_64/griddb-$griddb_version-opensuse.x86_64.rpm
+    mv installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm \
+      installer/RPMS/x86_64/griddb-$griddb_version-opensuse.x86_64.rpm
 }
 
 config_griddb() {
     local username=$1
     local password=$2
     local cluster_name=$3
- su -l gsadm -c "gs_passwd $username -p $password"
-          su -l gsadm -c "sed -i 's/\"clusterName\":\"\"/\"clusterName\":\"$cluster_name\"/g' /var/lib/gridstore/conf/gs_cluster.json"
+    su -l gsadm -c "gs_passwd $username -p $password"
+    su -l gsadm -c "sed -i 's/\"clusterName\":\"\"/\"clusterName\":\"$cluster_name\"/g' /var/lib/gridstore/conf/gs_cluster.json"
 }
 
 start_griddb() {
