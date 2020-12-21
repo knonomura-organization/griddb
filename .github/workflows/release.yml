@@ -73,7 +73,8 @@ jobs:
              && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Run sample
         run: . .github/workflows/script/function.sh \
-             && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+             && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} \
+                ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: . .github/workflows/script/function.sh \
              && stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
@@ -111,8 +112,8 @@ jobs:
              && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Run sample
         run: . .github/workflows/script/function.sh \
-              && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} \
-                  ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+             && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} \
+                ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: . .github/workflows/script/function.sh \
              && stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
