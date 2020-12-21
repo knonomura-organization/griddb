@@ -30,8 +30,8 @@ jobs:
         run: . .github/workflows/script/function.sh \
              && config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Start server
-        run: . .github/workflows/script/function.sh &&  \
-             start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
+        run: . .github/workflows/script/function.sh \
+             && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Run sample
         run: . .github/workflows/script/function.sh \
              && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT}  \
@@ -107,7 +107,8 @@ jobs:
         run: . .github/workflows/script/function.sh \
              && config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Start server
-        run: . .github/workflows/script/function.sh && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
+        run: . .github/workflows/script/function.sh \
+             && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Run sample
         run: . .github/workflows/script/function.sh \
               && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} \
