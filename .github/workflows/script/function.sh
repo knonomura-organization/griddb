@@ -57,7 +57,8 @@ run_sample() {
     local cluster_name=$3
     local username=$4
     local password=$5
-    java gsSample/Sample1 $notification_host $notification_port $cluster_name $username $password
+    java gsSample/Sample1 $notification_host $notification_port \
+        $cluster_name $username $password
 }
 
 opensuse_change_package_name() {
