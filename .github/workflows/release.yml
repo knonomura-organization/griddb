@@ -20,15 +20,15 @@ jobs:
           - os: Ubuntu
             container: duongntt/griddb-ubuntu-18.04
             file_type: deb
-            release_path: ../griddb_*_amd64.deb
+            package_path: ../griddb_*_amd64.deb
           - os: Centos
             container: duongntt/griddb-centos7
             file_type: rpm
-            release_path: installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
+            package_path: installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
           - os: Opensuse
             container: duongntt/griddb-opensuse-15.1
             file_type: rpm
-            release_path: installer/RPMS/x86_64/griddb-*-opensuse.x86_64.rpm
+            package_path: installer/RPMS/x86_64/griddb-*-opensuse.x86_64.rpm
 
     container:
       image:  ${{ matrix.container }}
@@ -40,9 +40,9 @@ jobs:
         run: . .github/workflows/script/function.sh && build_package ${{ matrix.os }}
       - name: Check package information
         run: . .github/workflows/script/function.sh \
-             && check_package ${{ matrix.release_path }} ${{ matrix.os }}
+             && check_package ${{ matrix.package_path }} ${{ matrix.os }}
       - name: Install package
-        run: . .github/workflows/script/function.sh && install_griddb ${{ matrix.release_path }} ${{ matrix.os }}
+        run: . .github/workflows/script/function.sh && install_griddb ${{ matrix.package_path }} ${{ matrix.os }}
       - name: Config GridDB server
         run: . .github/workflows/script/function.sh \
              && config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
@@ -62,7 +62,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ matrix.release_path }}
+          file: ${{ matrix.package_path }}
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
