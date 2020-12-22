@@ -9,6 +9,7 @@ env:
   GRIDDB_USERNAME: "admin"
   GRIDDB_PASSWORD: "admin"
   GRIDDB_PACKAGE_NAME: "griddb"
+
 strategy:
   matrix:
     include:
