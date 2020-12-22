@@ -18,7 +18,7 @@ get_version() {
 build_package() {
     local os=$1
 
-    case os in
+    case $os in
         CENTOS | OPENSUSE)
             # For CentOS and OpenSuse :
 
@@ -58,7 +58,7 @@ build_griddb() {
     # Build GridDB server
     local os=$1
 
-    case os in
+    case $os in
         CENTOS | OPENSUSE)
             ./bootstrap.sh
             ./configure
@@ -139,7 +139,7 @@ stop_griddb() {
 check_package() {
     local os=$1
 
-    case os in
+    case $os in
         CENTOS | OPENSUSE)
             rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
             ;;
@@ -159,7 +159,7 @@ uninstall_package() {
     local package_name=$1
     local os=$2
 
-    case os in
+    case $os in
         CENTOS | OPENSUSE)
             rpm -e $package_name
             ;;
