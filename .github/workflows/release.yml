@@ -39,7 +39,8 @@ jobs:
       - name: Create ${{ matrix.file_type }} for ${{ matrix.os }}
         run: . .github/workflows/script/function.sh && build_package ${{ matrix.os }}
       - name: Check package information
-        run: . .github/workflows/script/function.sh && check_package ${{ matrix.release_path }} ${{ matrix.os }}
+        run: . .github/workflows/script/function.sh \
+             && check_package ${{ matrix.release_path }} ${{ matrix.os }}
       - name: Install package
         run: . .github/workflows/script/function.sh && install_griddb ${{ matrix.release_path }} ${{ matrix.os }}
       - name: Config GridDB server

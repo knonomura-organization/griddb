@@ -44,13 +44,12 @@ build_package() {
             ;;
 
         *)
-            echo -n "Unknown OS"
+            echo "Unknown OS"
             ;;
 
     esac
     # Change package name of OPENSUSE version to distinguish with CENTOS version
-    if [ $os == $OPENSUSE ]
-    then
+    if [ $os == $OPENSUSE ]; then
         $(opensuse_change_package_name)
     fi
 }
@@ -71,7 +70,7 @@ build_griddb() {
             ;;
 
         *)
-            echo -n "Unknown OS"
+            echo "Unknown OS"
            ;;
 
     esac
@@ -94,7 +93,7 @@ install_griddb() {
             ;;
 
         *)
-            echo -n "Unknown OS"
+            echo "Unknown OS"
            ;;
 
     esac
@@ -167,7 +166,7 @@ check_package() {
             ;;
 
         *)
-            echo -n "Unknown OS"
+            echo "Unknown OS"
             ;;
 
     esac
