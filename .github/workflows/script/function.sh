@@ -49,7 +49,7 @@ build_package() {
 
     esac
     # Change package name of OPENSUSE version to distinguish with CENTOS version
-    if ($os = $OPENSUSE); then
+    if [$os == $OPENSUSE]; then
         $(opensuse_change_package_name)
     fi
 }
