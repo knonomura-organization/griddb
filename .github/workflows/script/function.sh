@@ -123,11 +123,11 @@ opensuse_change_package_name() {
     local griddb_version=$(get_version)
 
     # Change file name to distinguish with CentOS package
-    if [ ! -f installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm ]; then
+    if [ ! -f "installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm" ]; then
         echo "griddb-$griddb_version-linux.x86_64.rpm not found !"
     fi
-    mv installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm \
-      installer/RPMS/x86_64/griddb-$griddb_version-opensuse.x86_64.rpm
+    mv "installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm" \
+      "installer/RPMS/x86_64/griddb-$griddb_version-opensuse.x86_64.rpm"
 }
 
 config_griddb() {
