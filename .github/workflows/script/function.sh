@@ -67,7 +67,7 @@ build_griddb() {
             ;;
 
         $UBUNTU)
-            # Do nothing
+            # No need to build firt for Ubuntu package
             ;;
 
         *)
@@ -154,15 +154,16 @@ stop_griddb() {
 }
 
 check_package() {
-    local os=$1
+    local package_path=$1
+    local os=$2
 
     case $os in
         $CENTOS | $OPENSUSE)
-            rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
+            rpm -qip $package_path
             ;;
 
         $UBUNTU)
-            dpkg-deb -I ../griddb_*_amd64.deb
+            dpkg-deb -I $package_path
             ;;
 
         *)
