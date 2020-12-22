@@ -9,13 +9,17 @@ env:
   GRIDDB_USERNAME: "admin"
   GRIDDB_PASSWORD: "admin"
   GRIDDB_PACKAGE_NAME: "griddb"
-matrix:
-  os: [{os_name:centos, container:duongntt/griddb-centos7}, 
-       {os_name:ubuntu, container:duongntt/griddb-opensuse-15.1}]
-
+      matrix:
+       include:
+         - os: Ubuntu
+           container: duongntt/griddb-ubuntu-18.04
+         - os: Centos
+           container: duongntt/griddb-centos7
+         - os: Opensuse
+           container: duongntt/griddb-opensuse-15.1
 jobs:
-  release_rpm_centos_7:
-    name: Create and release rpm file for CentOS7
+  release_package:
+    name: Create and release rpm file for ${{ matrix.os }}
     runs-on: ubuntu-18.04
     container:
       image:  ${{ matrix.os.container }}
