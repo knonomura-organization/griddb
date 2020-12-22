@@ -79,9 +79,24 @@ build_griddb() {
 
 install_griddb() {
     local griddb_version=$(get_version)
-
+    
+    local os=$1
     # Install package
-    rpm -ivh installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm
+    case $os in
+        $CENTOS | $OPENSUSE)
+            rpm -ivh installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm
+            ;;
+
+        $UBUNTU)
+            dpkg -i ../griddb_*_amd64.deb
+            ;;
+
+        *)
+            echo -n "Unknown OS"
+           ;;
+
+    esac
+
 }
 
 run_sample() {
@@ -145,7 +160,7 @@ check_package() {
             ;;
 
         $UBUNTU)
-            dpkg -i ../griddb_*_amd64.deb
+            dpkg-deb -I ../griddb_*_amd64.deb
             ;;
 
         *)
