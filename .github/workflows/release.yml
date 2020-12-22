@@ -13,7 +13,7 @@ env:
 
 jobs:
   release_package:
-    name: Create and release rpm file for ${{ matrix.os }}
+    name: Create and release package file for ${{ matrix.os }}
     runs-on: ubuntu-18.04
     strategy:
       matrix:
@@ -26,7 +26,7 @@ jobs:
             container: duongntt/griddb-opensuse-15.1
 
     container:
-      image:  ${{ matrix.os.container }}
+      image:  ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v1
       - name: Build Griddb server
