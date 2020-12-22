@@ -15,15 +15,15 @@ jobs:
   release_package:
     name: Create and release rpm file for ${{ matrix.os }}
     runs-on: ubuntu-18.04
-  strategy:
-    matrix:
-      include:
-        - os: Ubuntu
-          container: duongntt/griddb-ubuntu-18.04
-        - os: Centos
-          container: duongntt/griddb-centos7
-        - os: Opensuse
-          container: duongntt/griddb-opensuse-15.1
+    strategy:
+      matrix:
+        include:
+          - os: Ubuntu
+            container: duongntt/griddb-ubuntu-18.04
+          - os: Centos
+            container: duongntt/griddb-centos7
+          - os: Opensuse
+            container: duongntt/griddb-opensuse-15.1
 
     container:
       image:  ${{ matrix.os.container }}
