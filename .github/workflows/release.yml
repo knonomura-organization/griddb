@@ -10,33 +10,38 @@ env:
   GRIDDB_PASSWORD: "admin"
   GRIDDB_PACKAGE_NAME: "griddb"
 
-
 jobs:
   release_package:
-    name: Create and release package file for ${{ matrix.os }}
+    name: Create and release ${{ matrix.file_type }} file for ${{ matrix.os }}
     runs-on: ubuntu-18.04
     strategy:
       matrix:
         include:
           - os: Ubuntu
             container: duongntt/griddb-ubuntu-18.04
+            file_type: deb
+            release_path: ../griddb_*_amd64.deb
           - os: Centos
             container: duongntt/griddb-centos7
+            file_type: rpm
+            release_path: installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
           - os: Opensuse
             container: duongntt/griddb-opensuse-15.1
+            file_type: rpm
+            release_path: installer/RPMS/x86_64/griddb-*-opensuse.x86_64.rpm
 
     container:
       image:  ${{ matrix.container }}
     steps:
       - uses: actions/checkout@v1
       - name: Build Griddb server
-        run: . .github/workflows/script/function.sh && build_griddb
-      - name: Create rpm for CentOS
-        run: . .github/workflows/script/function.sh && build_rpm
+        run: . .github/workflows/script/function.sh && build_griddb ${{ matrix.os }}
+      - name: Create ${{ matrix.file_type }} for ${{ matrix.os }}
+        run: . .github/workflows/script/function.sh && build_package ${{ matrix.os }}
       - name: Check package information
-        run: rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
+        run: . .github/workflows/script/function.sh && check_package ${{ matrix.os }}
       - name: Install package
-        run: . .github/workflows/script/function.sh && install_griddb
+        run: . .github/workflows/script/function.sh && install_griddb ${{ matrix.os }}
       - name: Config GridDB server
         run: . .github/workflows/script/function.sh \
              && config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
@@ -51,12 +56,13 @@ jobs:
         run: . .github/workflows/script/function.sh \
              && stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Uninstall package
-        run: rpm -e ${GRIDDB_PACKAGE_NAME}
-      - name: Upload rpm file
+        run: . .github/workflows/script/function.sh \
+             && uninstall_package ${GRIDDB_PACKAGE_NAME} ${{ matrix.os }}
+      - name: Upload ${{ matrix.file_type }} file
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
+          file: ${{ matrix.release_path }}
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
