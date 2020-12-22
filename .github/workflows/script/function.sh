@@ -55,18 +55,18 @@ build_package() {
 }
 
 build_griddb() {
-    # Build GridDB server
     local os=$1
 
     case $os in
         $CENTOS | $OPENSUSE)
+            # Build GridDB server
             ./bootstrap.sh
             ./configure
             make
             ;;
 
         $UBUNTU)
-            # No need to build firt for Ubuntu package
+            # No need to build before create Ubuntu package
             ;;
 
         *)
@@ -78,11 +78,9 @@ build_griddb() {
 }
 
 install_griddb() {
-    local griddb_version=$(get_version)
-    
     local package_path=$1
     local os=$2
-    
+
     # Install package
     case $os in
         $CENTOS | $OPENSUSE)
