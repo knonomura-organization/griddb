@@ -9,6 +9,9 @@ env:
   GRIDDB_USERNAME: "admin"
   GRIDDB_PASSWORD: "admin"
   GRIDDB_PACKAGE_NAME: "griddb"
+matrix:
+  os: [{os:centos, container:duongntt/griddb-centos7}, {os:ubuntu, container:duongntt/griddb-opensuse-15.1}]
+
 
 jobs:
   release_rpm_centos_7:
