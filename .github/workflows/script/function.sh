@@ -36,7 +36,7 @@ build_package() {
             rm -rf $griddb_folder_name
             cd griddb/installer
             rpmbuild --define="_topdir `pwd`" -bb --clean SPECS/griddb.spec
-            cd ../..
+            cd ..
             ;;
 
         $UBUNTU)
