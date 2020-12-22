@@ -41,7 +41,7 @@ jobs:
       - name: Check package information
         run: . .github/workflows/script/function.sh && check_package ${{ matrix.os }}
       - name: Install package
-        run: . .github/workflows/script/function.sh && install_griddb ${{ matrix.os }}
+        run: . .github/workflows/script/function.sh && install_griddb ${{ matrix.release_path }} ${{ matrix.os }}
       - name: Config GridDB server
         run: . .github/workflows/script/function.sh \
              && config_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
@@ -50,8 +50,7 @@ jobs:
              && start_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD} ${GRIDDB_SERVER_NAME}
       - name: Run sample
         run: . .github/workflows/script/function.sh \
-             && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT}  \
-                 ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
+             && run_sample ${GRIDDB_NOTIFICATION_ADDRESS} ${GRIDDB_NOTIFICATION_PORT} ${GRIDDB_SERVER_NAME} ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}
       - name: Stop server
         run: . .github/workflows/script/function.sh \
              && stop_griddb ${GRIDDB_USERNAME} ${GRIDDB_PASSWORD}

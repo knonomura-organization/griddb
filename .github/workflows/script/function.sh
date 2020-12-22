@@ -49,7 +49,8 @@ build_package() {
 
     esac
     # Change package name of OPENSUSE version to distinguish with CENTOS version
-    if [$os == $OPENSUSE]; then
+    if [ $os == $OPENSUSE ]
+    then
         $(opensuse_change_package_name)
     fi
 }
@@ -80,15 +81,16 @@ build_griddb() {
 install_griddb() {
     local griddb_version=$(get_version)
     
-    local os=$1
+    local package_path=$1
+    local os=$2
+    
     # Install package
     case $os in
         $CENTOS | $OPENSUSE)
-            rpm -ivh installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm
+            rpm -ivh $package_path
             ;;
-
         $UBUNTU)
-            dpkg -i ../griddb_*_amd64.deb
+            dpkg -i $package_path
             ;;
 
         *)
