@@ -19,7 +19,7 @@ build_package() {
     local os=$1
 
     case $os in
-        CENTOS | OPENSUSE)
+        $CENTOS | $OPENSUSE)
             # For CentOS and OpenSuse :
 
             # Get griddb version and set source code zip file name,
@@ -39,7 +39,7 @@ build_package() {
             cd ../..
             ;;
 
-        UBUNTU)
+        $UBUNTU)
             dpkg-buildpackage -b
             ;;
 
@@ -49,7 +49,7 @@ build_package() {
 
     esac
     # Change package name of OPENSUSE version to distinguish with CENTOS version
-    if ("$os" = OPENSUSE); then
+    if ($os = $OPENSUSE); then
         $(opensuse_change_package_name)
     fi
 }
@@ -59,13 +59,13 @@ build_griddb() {
     local os=$1
 
     case $os in
-        CENTOS | OPENSUSE)
+        $CENTOS | $OPENSUSE)
             ./bootstrap.sh
             ./configure
             make
             ;;
 
-        UBUNTU)
+        $UBUNTU)
             # Do nothing
             ;;
 
@@ -140,11 +140,11 @@ check_package() {
     local os=$1
 
     case $os in
-        CENTOS | OPENSUSE)
+        $CENTOS | $OPENSUSE)
             rpm -qip installer/RPMS/x86_64/griddb-*-linux.x86_64.rpm
             ;;
 
-        UBUNTU)
+        $UBUNTU)
             dpkg -i ../griddb_*_amd64.deb
             ;;
 
@@ -160,11 +160,11 @@ uninstall_package() {
     local os=$2
 
     case $os in
-        CENTOS | OPENSUSE)
+        $CENTOS | $OPENSUSE)
             rpm -e $package_name
             ;;
 
-        UBUNTU)
+        $UBUNTU)
             dpkg -r $package_name
             ;;
 
