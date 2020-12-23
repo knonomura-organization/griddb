@@ -102,9 +102,7 @@ run_sample() {
     # Run sample
     export CLASSPATH=${CLASSPATH}:/usr/share/java/gridstore.jar
     mkdir gsSample
-    if [ ! -f /usr/griddb-*/docs/sample/program/Sample1.java ]; then
-        echo "Sample1.java not found!"
-    fi
+    check_file_exist "/usr/griddb-*/docs/sample/program/Sample1.java"
     cp /usr/griddb-*/docs/sample/program/Sample1.java gsSample/.
     javac gsSample/Sample1.java
     local notification_host=$1
