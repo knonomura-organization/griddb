@@ -4,10 +4,15 @@ readonly UBUNTU=Ubuntu
 readonly CENTOS=Centos
 readonly OPENSUSE=Opensuse
 
-get_version() {
-    if [ ! -f installer/SPECS/griddb.spec ]; then
-        echo "Spec file not found!"
+check_file_exist() {
+    local file_path=$1
+    if [ ! -f "$file_path"]; then
+        echo "$file_path not found!"
     fi
+}
+
+get_version() {
+    check_file_exist "installer/SPECS/griddb.spec"
 
     echo $(grep -Eo '[0-9\.]+' installer/SPECS/griddb.spec) > output.txt
     local griddb_version=$(awk '{print $1}' output.txt)
@@ -17,11 +22,8 @@ get_version() {
 
 build_package() {
     local os=$1
-
     case $os in
         $CENTOS | $OPENSUSE)
-            # For CentOS and OpenSuse :
-
             # Get griddb version and set source code zip file name,
             #   ex "4.5.2" and "griddb-4.5.2.zip"
             local griddb_version=$(get_version)
@@ -35,6 +37,7 @@ build_package() {
             cp $griddb_zip_file griddb/installer/SOURCES/
             rm -rf $griddb_folder_name
             cd griddb/installer
+            check_file_exist "SPECS/griddb.spec"
             rpmbuild --define="_topdir `pwd`" -bb --clean SPECS/griddb.spec
             cd ..
             ;;
@@ -56,7 +59,6 @@ build_package() {
 
 build_griddb() {
     local os=$1
-
     case $os in
         $CENTOS | $OPENSUSE)
             # Build GridDB server
@@ -64,14 +66,12 @@ build_griddb() {
             ./configure
             make
             ;;
-
         $UBUNTU)
             # No need to build before create Ubuntu package
             ;;
-
         *)
             echo "Unknown OS"
-           ;;
+            ;;
 
     esac
 
@@ -79,8 +79,9 @@ build_griddb() {
 
 install_griddb() {
     local package_path=$1
-    local os=$2
+    check_file_exist "$package_path"
 
+    local os=$2
     # Install package
     case $os in
         $CENTOS | $OPENSUSE)
@@ -89,10 +90,9 @@ install_griddb() {
         $UBUNTU)
             dpkg -i $package_path
             ;;
-
         *)
             echo "Unknown OS"
-           ;;
+            ;;
 
     esac
 
@@ -120,9 +120,7 @@ opensuse_change_package_name() {
     local griddb_version=$(get_version)
 
     # Change file name to distinguish with CentOS package
-    if [ ! -f "installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm" ]; then
-        echo "griddb-$griddb_version-linux.x86_64.rpm not found !"
-    fi
+    check_file_exist "installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm"
     mv "installer/RPMS/x86_64/griddb-$griddb_version-linux.x86_64.rpm" \
       "installer/RPMS/x86_64/griddb-$griddb_version-opensuse.x86_64.rpm"
 }
@@ -152,17 +150,16 @@ stop_griddb() {
 
 check_package() {
     local package_path=$1
-    local os=$2
+    check_file_exist "$package_path"
 
+    local os=$2
     case $os in
         $CENTOS | $OPENSUSE)
             rpm -qip $package_path
             ;;
-
         $UBUNTU)
             dpkg-deb -I $package_path
             ;;
-
         *)
             echo "Unknown OS"
             ;;
@@ -173,20 +170,16 @@ check_package() {
 uninstall_package() {
     local package_name=$1
     local os=$2
-
     case $os in
         $CENTOS | $OPENSUSE)
             rpm -e $package_name
             ;;
-
         $UBUNTU)
             dpkg -r $package_name
             ;;
-
         *)
-            echo -n "Unknown OS"
+            echo "Unknown OS"
             ;;
-
     esac
 }
 
