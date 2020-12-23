@@ -6,7 +6,7 @@ readonly OPENSUSE=Opensuse
 
 check_file_exist() {
     local file_path=$1
-    if [ ! -f "$file_path"]; then
+    if [ ! -f "$file_path" ]; then
         echo "$file_path not found!"
     fi
 }
